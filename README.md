@@ -15,7 +15,10 @@ Python is required to run this app. Download it [here](https://www.python.org/).
 4. Run `python entertainment_center.py`
 6. A window should open in your default web browser with the generated website. If not, you can manually drag the generated html file from the project folder into your web browser of choice.
 
-> Note: If you make any changes, run the `python entertainment_center.py` command again to regenerate the website.
+> Note: If you make any changes, run the `python entertainment_center.py` command again
 
-### Adding a Movie
+## Adding Additional Movies
+
+> Note: Every BTTF movie is already included, so you should not need to make additions, unless they add a Part IIII or remake the whole trilogy
+
 Each movie is an instance of the `Movie` class, found in `media.py`. When creating an instance of the `Movie` class, you should include the title, storyline, poster image url, and youtube url where the movie trailer can be found. An example of this can be found in `entertainment_center.py`.
