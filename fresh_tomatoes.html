@@ -1,10 +1,4 @@
-import webbrowser
-import os
-import re
 
-
-# Styles and scripting for the page
-main_page_head = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +33,6 @@ main_page_head = '''
             padding: 30px 20px;
             border-radius: 10px;
             background-color: #EEE;
-            margin-bottom: 30px;
         }
         .inner-box:hover {
             background-color: #d4d4d4;
@@ -85,11 +78,7 @@ main_page_head = '''
         });
     </script>
 </head>
-'''
 
-
-# The main page layout and title bar
-main_page_content = '''
   <body>
     <!-- Trailer Video Modal -->
     <div class="modal" id="trailer">
@@ -116,60 +105,56 @@ main_page_content = '''
     </div>
     <div class="container">
       <div class="row">
-        {movie_tiles}
+        
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="qvsgGtivCgs" data-toggle="modal" data-target="#trailer">
+    <div class="inner-box">
+        <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg" width="220" height="342">
+        <h3>Back to the Future</h3>
+        <small>In this 1980s sci-fi classic, a small-town California teen is thrown back into the '50s when an experiment by his eccentric scientist friend goes awry.</small>
+    </div>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="MdENmefJRpw" data-toggle="modal" data-target="#trailer">
+    <div class="inner-box">
+        <img src="https://upload.wikimedia.org/wikipedia/en/c/c2/Back_to_the_Future_Part_II.jpg" width="220" height="342">
+        <h3>Back to the Future Part II</h3>
+        <small>In this zany sequel, the time-traveling duo return from saving Marty's future son from disaster, only to discover their own time transformed.</small>
+    </div>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="3C8c3EoEfw4" data-toggle="modal" data-target="#trailer">
+    <div class="inner-box">
+        <img src="https://upload.wikimedia.org/wikipedia/en/4/4e/Back_to_the_Future_Part_III.jpg" width="220" height="342">
+        <h3>Back to the Future Part III</h3>
+        <small>In this final chapter, Marty obtains a 70-year-old message from his time-traveling friend, in which he informs Marty that he has retired to a small town in the Old West.</small>
+    </div>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="qvsgGtivCgs" data-toggle="modal" data-target="#trailer">
+    <div class="inner-box">
+        <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg" width="220" height="342">
+        <h3>Back to the Future</h3>
+        <small>In this 1980s sci-fi classic, a small-town California teen is thrown back into the '50s when an experiment by his eccentric scientist friend goes awry.</small>
+    </div>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="MdENmefJRpw" data-toggle="modal" data-target="#trailer">
+    <div class="inner-box">
+        <img src="https://upload.wikimedia.org/wikipedia/en/c/c2/Back_to_the_Future_Part_II.jpg" width="220" height="342">
+        <h3>Back to the Future Part II</h3>
+        <small>In this zany sequel, the time-traveling duo return from saving Marty's future son from disaster, only to discover their own time transformed.</small>
+    </div>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="3C8c3EoEfw4" data-toggle="modal" data-target="#trailer">
+    <div class="inner-box">
+        <img src="https://upload.wikimedia.org/wikipedia/en/4/4e/Back_to_the_Future_Part_III.jpg" width="220" height="342">
+        <h3>Back to the Future Part III</h3>
+        <small>In this final chapter, Marty obtains a 70-year-old message from his time-traveling friend, in which he informs Marty that he has retired to a small town in the Old West.</small>
+    </div>
+</div>
+
       </div>
     </div>
   </body>
 </html>
-'''
-
-
-# A single movie entry html template
-movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <div class="inner-box">
-        <img src="{poster_image_url}" width="220" height="342">
-        <h3>{movie_title}</h3>
-        <small>{storyline}</small>
-    </div>
-</div>
-'''
-
-
-def create_movie_tiles_content(movies):
-    # The HTML content for this section of the page
-    content = ''
-    for movie in movies:
-        # Extract the youtube ID from the url
-        youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
-        youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
-        trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
-                              else None)
-
-        # Append the tile for the movie with its content filled in
-        content += movie_tile_content.format(
-            movie_title=movie.title,
-            storyline=movie.storyline,
-            poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
-        )
-    return content
-
-
-def open_movies_page(movies):
-    # Create or overwrite the output file
-    output_file = open('fresh_tomatoes.html', 'w')
-
-    # Replace the movie tiles placeholder generated content
-    rendered_content = main_page_content.format(
-        movie_tiles=create_movie_tiles_content(movies))
-
-    # Output the file
-    output_file.write(main_page_head + rendered_content)
-    output_file.close()
-
-    # open the output file in the browser (in a new tab, if possible)
-    url = os.path.abspath(output_file.name)
-    webbrowser.open('file://' + url, new=2)
